@@ -96,29 +96,43 @@ keys.forEach(e => {
     text.focus();
     event.preventDefault();
     e.classList.add('active');
-
+    let back = getCaretPos(text);
     if (event.target.dataset.key != 'CapsLock' && event.target.dataset.key != 'ControlLeft' && event.target.dataset.key != 'ControlRight' && event.target.dataset.key != 'AltLeft' &&
       event.target.dataset.key != 'AltRight' && event.target.dataset.key != 'Enter' && event.target.dataset.key != 'Backspace' && event.target.dataset.key != 'Delete' &&
-      event.target.dataset.key != 'ShiftRight' && event.target.dataset.key != 'ShiftLeft' && event.target.dataset.key != 'Tab' && event.target.dataset.key != 'MetaLeft') {
+      event.target.dataset.key != 'ShiftRight' && event.target.dataset.key != 'ShiftLeft' && event.target.dataset.key != 'Tab' && event.target.dataset.key != 'MetaLeft' &&
+       event.target.dataset.key != 'ArrowLeft' && event.target.dataset.key != 'ArrowRight' && event.target.dataset.key != 'ArrowUp' && event.target.dataset.key != 'ArrowDown') {
       if (checkBox.checked == false) {
-        text.value = text.value + event.target.innerHTML;
+        let tmp = text.value.split('');
+        tmp.splice(back, 0, event.target.innerHTML);
+        text.value = tmp.join('');
+        setSelectionRange(text, back + 1, back + 1);
       } else {
-        text.value = text.value + event.target.innerHTML.toUpperCase();
+        let tmp = text.value.split('');
+        tmp.splice(back, 0, event.target.innerHTML.toUpperCase());
+        text.value = tmp.join('');
+        setSelectionRange(text, back + 1, back + 1);
       }
     } else if (event.target.dataset.key === 'Backspace') {
-      let back = getCaretPos(text);
+      back = getCaretPos(text);
       let tmp = text.value.split('');
       tmp.splice(back - 1, 1);
       text.value = tmp.join('');
-      setSelectionRange(text, back, back);
+      setSelectionRange(text, back - 1, back - 1);
     } else if (event.target.dataset.key === 'Delete') {
-      let back = getCaretPos(text);
       let tmp = text.value.split('');
       tmp.splice(back, 1);
       text.value = tmp.join('');
       setSelectionRange(text, back, back);
     } else if (event.target.dataset.key === 'Tab') {
       text.value = text.value + '    ';
+    } else if (event.target.dataset.key === 'ArrowLeft') {
+      setSelectionRange(text, back - 1, back - 1);
+    } else if (event.target.dataset.key === 'ArrowRight') {
+      setSelectionRange(text, back + 1, back + 1);
+    } else if (event.target.dataset.key === 'ArrowUp') {
+      setSelectionRange(text, back - 92, back - 92);
+    } else if (event.target.dataset.key === 'ArrowDown') {
+      setSelectionRange(text, back + 92, back + 92);
     }
   });
 });
@@ -155,4 +169,24 @@ document.addEventListener('keydown', (event) => {
   if (event.key == 'MetaLeft') {
     event.preventDefault();
   }
+  if (event.key == 'ShiftLeft' || event.key == 'ShiftRight') {
+    if (checkBox.checked !== true) {
+      checkBox.checked = true;
+    } else {
+      checkBox.checked = false;
+    }
+  }
 });
+
+document.addEventListener('keydown', (event) => {
+  if (event.key == 'ShiftLeft' || event.key == 'ShiftRight') {
+    if (checkBox.checked !== true) {
+      checkBox.checked = true;
+    } else {
+      checkBox.checked = false;
+    }
+  }
+});
+
+
+
