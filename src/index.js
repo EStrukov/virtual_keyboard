@@ -124,7 +124,10 @@ keys.forEach(e => {
       text.value = tmp.join('');
       setSelectionRange(text, back, back);
     } else if (event.target.dataset.key === 'Tab') {
-      text.value = text.value + '    ';
+      let tmp = text.value.split('');
+      tmp.splice(back, 0, '    ');
+      text.value = tmp.join('');
+      setSelectionRange(text, back + 4, back + 4);
     } else if (event.target.dataset.key === 'ArrowLeft') {
       setSelectionRange(text, back - 1, back - 1);
     } else if (event.target.dataset.key === 'ArrowRight') {
@@ -155,6 +158,7 @@ capsLock.addEventListener('click', () => {
 
 document.addEventListener('keydown', (event) => {
   text.focus();
+  let back = getCaretPos(text);
   if (event.key == 'CapsLock') {
     if (checkBox.checked !== true) {
       checkBox.checked = true;
@@ -164,7 +168,10 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key == 'Tab') {
     event.preventDefault();
-    text.value = text.value + '    ';
+    let tmp = text.value.split('');
+    tmp.splice(back, 0, '    ');
+    text.value = tmp.join('');
+    setSelectionRange(text, back + 4, back + 4);
   }
   if (event.key == 'MetaLeft') {
     event.preventDefault();
